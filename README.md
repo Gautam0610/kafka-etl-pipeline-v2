@@ -1,49 +1,50 @@
-# README
+# Kafka ETL Pipeline
+
+This project implements an ETL pipeline using Kafka for data ingestion, processing, and sinking to various data stores.
 
 ## Usage
 
-1.  **Clone the repository:**
+1.  **Prerequisites:**
+    *   Kafka cluster
+    *   PostgreSQL database
+    *   MongoDB database
+    *   Elasticsearch cluster
+    *   Python 3.6+
+
+2.  **Installation:**
     ```bash
-    git clone https://github.com/Gautam0610/kafka-etl-pipeline-v2.git
-    cd kafka-etl-pipeline-v2
+    pip install kafka-python psycopg2 pymongo elasticsearch requests
     ```
 
-2.  **Set up the environment:**
-    *   Install Docker and Docker Compose.
+3.  **Configuration:**
+    *   Update the connection parameters in the connector and sink classes with your actual database and Kafka cluster details.
 
-3.  **Configure the environment variables:**
-    *   Create a `.env` file based on the `.env.example` (if provided) and fill in the necessary values (e.g., Kafka broker address, database credentials).
+4.  **Running the pipeline:**
+    *   Run the connector scripts to ingest data into Kafka topics.
+    *   Implement a consumer to read from the Kafka topics, apply transformations, validations, and enrichments.
+    *   Run the sink scripts to load the processed data into the target data stores.
 
-4.  **Start the services:**
-    ```bash
-    docker-compose up -d
-    ```
+## Modules
 
-5.  **Install Python dependencies:**
-    ```bash
-    pip install -r requirements.txt
-    ```
+*   **ingestion:** Contains classes for data ingestion from various sources (REST API, databases, files).
+*   **processing:** Contains classes for data transformation, validation, and enrichment.
+*   **sinks:** Contains classes for data sinking to various data stores (PostgreSQL, MongoDB, Elasticsearch).
 
-## Project Structure
+## Example
 
-*   `.gitignore`: Specifies intentionally untracked files that Git should ignore.
-*   `docker-compose.yml`: Defines services for Kafka, Zookeeper, PostgreSQL, and MongoDB.
-*   `requirements.txt`: Lists Python dependencies for the project.
-*   `ingestion/`: Contains modules for data ingestion.
-    *   `rest_connector.py`: Placeholder for REST API data ingestion.
-    *   `database_connector.py`: Placeholder for database data ingestion.
-    *   `file_connector.py`: Placeholder for file data ingestion.
-    *   `requirements.txt`: Lists Python dependencies for the ingestion modules.
-*   `processing/`: Contains modules for data processing.
-    *   `transformer.py`: Placeholder for data transformation logic.
-    *   `validator.py`: Placeholder for data validation logic.
-    *   `enricher.py`: Placeholder for data enrichment logic.
-    *   `requirements.txt`: Lists Python dependencies for the processing modules.
-*   `sinks/`: Contains modules for data sinks.
-    *   `postgres_sink.py`: Placeholder for data sinking to PostgreSQL.
-    *   `mongodb_sink.py`: Placeholder for data sinking to MongoDB.
-    *   `elasticsearch_sink.py`: Placeholder for data sinking to Elasticsearch.
-    *   `requirements.txt`: Lists Python dependencies for the sink modules.
-*   `schemas/`: Contains Avro schemas.
-    *   `product.avsc`: Basic schema for product data.
-    *   `order.avsc`: Basic schema for order data.
+To run the `RestConnector` example:
+
+```bash
+python ingestion/rest_connector.py
+```
+
+## Docker
+
+A `Dockerfile` is provided to containerize the application. Build and run the Docker image using the following commands:
+
+```bash
+docker build -t kafka-etl .
+docker run -it kafka-etl
+```
+
+**Note:** You will need to configure the Docker image with the necessary environment variables for Kafka, PostgreSQL, MongoDB, and Elasticsearch connections.
